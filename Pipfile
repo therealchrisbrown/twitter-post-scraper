@@ -8,6 +8,7 @@ python-decouple = "*"
 tweepy = "*"
 pandas = "*"
 streamlit = "*"
+pymongo = {extras = ["srv"], version = "*"}
 
 [dev-packages]
 
