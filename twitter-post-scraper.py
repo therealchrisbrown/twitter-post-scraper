@@ -13,8 +13,8 @@ import datetime
 COMPANY = config('COMPANY_NAME')
 
 # Connect mongoDB
-cluster = MongoClient("mongodb+srv://cbscraper:" + config('mongodb_pw') +"@cluster0.qet17.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-db = cluster ["scraperDB"]
+client = MongoClient(config('mongodb_uri'))
+db = client[config('mongodb_cluster')]
 collection_twitter = db["twitter"]
 
 # Twitter Auth & Config
@@ -48,20 +48,21 @@ except BaseException as e:
     print('failed on_status,',str(e))
     time.sleep(3)
     
-existing_tw_data = pd.read_csv('./results/BDPTwitter.csv', error_bad_lines=False, sep=";")
+#existing_tw_data = pd.read_csv('./results/BDPTwitter.csv', error_bad_lines=False, sep=";")
+existing_tw_data = pd.DataFrame(list(collection_twitter.find()))
 
 last_date_current = pd.to_datetime(tweets_df['Datum']).iloc[-1]
 last_date_existing = pd.to_datetime(existing_tw_data['Datum']).iloc[-1]
 
 ### ERGEBNIS
 if last_date_current == last_date_existing:
-    print('Keine neuen Tweets')
-    
+    print("#### Keine neuen Tweets ####")
+
 else:
-    new_tweets = tweets_df.loc[lambda tweets_df: tweets_df['Datum'] > last_date_existing]
-    conc_df = new_tweets.to_csv('./results/BDPTwitter.csv', mode='a', header=False, index=False, sep=';')
+    new_tweets = tweets_df.loc[lambda tweets_df: pd.to_datetime(tweets_df['Datum']) > last_date_existing]
+    #conc_df = new_tweets.to_csv('./results/BDPTwitter.csv', mode='a', header=False, index=False, sep=';')
 
     new_data_mdb_dict = new_tweets.to_dict('records')
     collection_twitter.insert_many(new_data_mdb_dict)
 
-    print("Es wurden Tweets hinzugefügt")
+    print("#### Es wurden Tweets hinzugefügt ####")
