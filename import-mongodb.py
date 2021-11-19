@@ -11,6 +11,9 @@ db = client[config('mongodb_cluster')]
 
 # Connect to specific Collection
 twitter_data = db.twitter
+news_data = db.news
+
+#news_data.insert({"_id": 1, "name": "chriz", "score": 2})
 
 # Dataframe
 twitter_data = pd.DataFrame(list(twitter_data.find()))
