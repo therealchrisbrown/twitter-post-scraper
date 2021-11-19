@@ -7,32 +7,42 @@ import time, os, fnmatch, shutil
 import csv
 import pymongo
 from pymongo import MongoClient
+import datetime
 
 ### COMPANY
 COMPANY = config('COMPANY_NAME')
-
 
 # Connect mongoDB
 cluster = MongoClient("mongodb+srv://cbscraper:" + config('mongodb_pw') +"@cluster0.qet17.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster ["scraperDB"]
 collection_twitter = db["twitter"]
 
-
+# Twitter Auth & Config
 auth = tw.OAuthHandler(config('consumer_key'),config('consumer_secret'))
 auth.set_access_token(config('access_token'),config('access_secret'))
 api = tw.API(auth,wait_on_rate_limit=True)
-
 username = config('twitter_user')
 count = 150
 
+### DATA
 try:
     tweets = tw.Cursor(api.user_timeline, id=username).items(count)
-    tweets_list = [[tweet.created_at, tweet.id, tweet.text] for tweet in tweets]
-    tweets_list_header = ['Datum', 'Tweet-Id', 'Tweet']
-    tweets_df = pd.DataFrame(tweets_list, columns=tweets_list_header).sort_values(['Datum'])
-    tweets_df["Company"] = COMPANY
-    tweets_df["Source"] = "Twitter"
-    tweets_df["Label"] = ""
+    tweets_list = []
+    for tweet in tweets:
+        created_at = tweet.created_at 
+        created_at = str(created_at)
+        tweet_dt = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M:%S+00:00')
+        tweets_list.append(
+            {
+                'Datum': created_at,
+                'Tweet-Id': tweet.id,
+                'Tweet': tweet.text,
+                'Company': COMPANY,
+                'Source': "Twitter",
+                'Label': ""
+            }
+        )
+    tweets_df = pd.DataFrame(tweets_list).sort_values(by=['Datum'], ascending=True)
 
 except BaseException as e:
     print('failed on_status,',str(e))
@@ -43,9 +53,10 @@ existing_tw_data = pd.read_csv('./results/BDPTwitter.csv', error_bad_lines=False
 last_date_current = pd.to_datetime(tweets_df['Datum']).iloc[-1]
 last_date_existing = pd.to_datetime(existing_tw_data['Datum']).iloc[-1]
 
-
+### ERGEBNIS
 if last_date_current == last_date_existing:
     print('Keine neuen Tweets')
+    
 else:
     new_tweets = tweets_df.loc[lambda tweets_df: tweets_df['Datum'] > last_date_existing]
     conc_df = new_tweets.to_csv('./results/BDPTwitter.csv', mode='a', header=False, index=False, sep=';')
@@ -54,4 +65,3 @@ else:
     collection_twitter.insert_many(new_data_mdb_dict)
 
     print("Es wurden Tweets hinzugefügt")
-
