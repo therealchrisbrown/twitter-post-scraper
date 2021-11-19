@@ -31,6 +31,7 @@ try:
     tweets_list_header = ['Datum', 'Tweet-Id', 'Tweet']
     tweets_df = pd.DataFrame(tweets_list, columns=tweets_list_header).sort_values(['Datum'])
     tweets_df["Company"] = COMPANY
+    tweets_df["Source"] = "Twitter"
     tweets_df["Label"] = ""
 
 except BaseException as e:
