@@ -48,13 +48,11 @@ except BaseException as e:
     print('failed on_status,',str(e))
     time.sleep(3)
     
-#existing_tw_data = pd.read_csv('./results/BDPTwitter.csv', error_bad_lines=False, sep=";")
+### CHECK NEW DATA & ERGEBNIS
 existing_tw_data = pd.DataFrame(list(collection_twitter.find()))
-
 last_date_current = pd.to_datetime(tweets_df['Datum']).iloc[-1]
 last_date_existing = pd.to_datetime(existing_tw_data['Datum']).iloc[-1]
 
-### ERGEBNIS
 if last_date_current == last_date_existing:
     print("#### Keine neuen Tweets ####")
 
