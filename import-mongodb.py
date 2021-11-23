@@ -19,3 +19,5 @@ news_data = db.news
 twitter_data = pd.DataFrame(list(twitter_data.find()))
 
 print(twitter_data)
+
+#twitter_data.update_many({}, {"$set":{"IsMailSent": "true"}})
