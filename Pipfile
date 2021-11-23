@@ -9,6 +9,7 @@ tweepy = "*"
 pandas = "*"
 streamlit = "*"
 pymongo = {extras = ["srv"], version = "*"}
+mime = "*"
 
 [dev-packages]
 
