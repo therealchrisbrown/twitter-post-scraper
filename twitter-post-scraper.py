@@ -39,7 +39,8 @@ try:
                 'Tweet': tweet.text,
                 'Company': COMPANY,
                 'Source': "Twitter",
-                'Label': ""
+                'Label': "",
+                'IsMailSent': "false"
             }
         )
     tweets_df = pd.DataFrame(tweets_list).sort_values(by=['Datum'], ascending=True)
