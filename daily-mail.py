@@ -1,3 +1,4 @@
+from email.mime import text
 import pymongo
 import pandas as pd
 from pymongo import TEXT, MongoClient
@@ -36,36 +37,78 @@ print(mail_data)
 
 
 ######### MAIL SETUP
-gmail_user = config('gmail_user')
-gmail_password = config('gmail_password')
 
-# SERVER = "localhost"
-message = MIMEMultipart()
-FROM = gmail_user
-TO = ["christian.braun@upchain.io"]
-SUBJECT = 'BPD Immobilien neue Aktion für dich'
-mail_content = '''Dies ist eine Testmail. Es gibt folgende Alerts'''
-TEXT = 'Bei deinem Kunden BPD Immobilien gibt es folgenden Alert'
+username = config('gmail_user')
+password = config('gmail_password')
+mail_from = username
+mail_to = "ralf.blum@upchain.io"
+mail_subject = 'BPD Immobilien neue Aktion für dich'
+#mail_body = ""
 
-message = """\
+html = """\
+<html>
+  <head>Für deinen Kunden 'BPD Immobilien' gibt folgende Alerts</head>
+  <body>
+    {0}
+  </body>
+</html>
+""".format(mail_data.to_html())
 
-%s
-""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
+part1 = MIMEText(html, 'html')
+mimemsg = MIMEMultipart()
+mimemsg['From']=mail_from
+mimemsg['To']=mail_to
+mimemsg['Subject']=mail_subject
+mimemsg.attach(part1)
 
 try:
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.ehlo()
-    server.login(gmail_user, gmail_password)
-    server.sendmail(FROM, TO, message)
-    # dev_server = smtplib.SMTP('localhost', 1025)
-    # dev_server.sendmail(FROM,TO,message)
-
+    connection = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    #connection.starttls()
+    connection.login(username,password)
+    connection.send_message(mimemsg)
+    connection.quit()
     print("Email erfolgreich versendet :-)")
 except BaseException as e:
     print('failed on_status,',str(e))
     time.sleep(3)
-else:
-    print("Keine neue Mail versendet")
+# else:
+#     print("Keine neue Mail versendet")
+
+
+
+# SERVER = "localhost"
+# message = MIMEMultipart()
+# FROM = gmail_user
+# TO = []
+# message['From'] = FROM
+# message['To'] = TO
+# message['Subject'] = 
+# mail_content = ''''''
+# message.attach(MIMEText(mail_content, 'plain'))
+
+# TEXT = 'Bei deinem Kunden BPD Immobilien gibt es folgenden Alert'
+
+# message = """\
+
+# %s
+# """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+
+# try:
+#     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+#     #server.starttls()
+#     server.ehlo()
+#     server.login(gmail_user, gmail_password)
+#     text = message.as_string()
+#     server.sendmail(FROM, TO, text)
+#     # dev_server = smtplib.SMTP('localhost', 1025)
+#     # dev_server.sendmail(FROM,TO,message)
+
+#     print("Email erfolgreich versendet :-)")
+# except BaseException as e:
+#     print('failed on_status,',str(e))
+#     time.sleep(3)
+# else:
+#     print("Keine neue Mail versendet")
 
 
 
