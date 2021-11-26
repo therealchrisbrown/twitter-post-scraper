@@ -1,4 +1,5 @@
 from email.mime import text
+import numpy
 import pymongo
 import pandas as pd
 from pymongo import TEXT, MongoClient
@@ -28,14 +29,39 @@ query_mail = twitter_data.find({
 mail_data = []
 for i in query_mail:
     mail_data.append({
-            'Was': i['Label'],
-            'Wann': i['Datum']
+            'Was': str(i['Label']),
+            'Wann': i['Datum'],
+            'Zur News': "https://twitter.com/i/web/status/" + str(i['Tweet-Id']),
+            'News-Inhalt': i['Tweet']
         }
     )
 
 mail_data = pd.DataFrame(mail_data).sort_values(by=['Wann'], ascending=False)
-print(mail_data)
+# print(mail_data)
 
+### IF STATEMENTS & QUERY FUNCTIONS
+
+query_MA = 'MATransaktion'
+query_GF = 'WechselGF'
+
+def search_function (element):
+    search_df = mail_data[mail_data['Was'].str.contains(element)]
+    return search_df
+
+if search_function(query_MA).shape[0] != 0:
+    NEWS_info = search_function(query_MA).iloc[0]['News-Inhalt']
+    NEWS_date = search_function(query_MA).iloc[0]['Wann']
+    NEWS_src =search_function(query_MA).iloc[0]['Zur News']
+    MA_head = "Veränderung im Unternehmensbereich"
+
+if search_function(query_GF).shape[0] != 0:
+    NEWS_info = search_function(query_GF).iloc[0]['News-Inhalt']
+    NEWS_date = search_function(query_GF).iloc[0]['Wann']
+    NEWS_src =search_function(query_GF).iloc[0]['Zur News']
+    GF_head = "Veränderung in der Unternehmensführung"
+
+
+    
 
 ######### MAIL SETUP
 
@@ -43,11 +69,18 @@ username = config('gmail_user')
 password = config('gmail_password')
 msg = EmailMessage()
 msg['From'] = username
-msg['To'] = ['jannis.holthusen@upchain.io']
-msg['Subject'] = 'BPD Immobilien neue Aktion für dich'
+msg['To'] = ['ralf.blum@upchain.io']
+msg['Subject'] = 'Dein Daily Report'
 
 class Main:
-    KUNDE = 'BPD'
+    MAIL_TO = 'Ralf'
+    KUNDE = 'BPD Immobilien'
+    INHALT = NEWS_info
+    DATUM = NEWS_date
+    QUELLE = NEWS_src
+    MATransaktion = MA_head
+    GF_WECHSEL = GF_head
+
 HTML_File = open('index.html', 'r')
 s =HTML_File.read().format(p=Main())
 
