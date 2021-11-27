@@ -1,4 +1,3 @@
-import pymongo
 from pymongo import MongoClient
 from decouple import config
 import pandas as pd

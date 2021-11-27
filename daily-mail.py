@@ -1,6 +1,4 @@
 from email.mime import text
-import numpy
-import pymongo
 import pandas as pd
 from pymongo import TEXT, MongoClient
 from decouple import config
