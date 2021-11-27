@@ -6,3 +6,4 @@
 *.env
 results
 backup
+logfile.txt

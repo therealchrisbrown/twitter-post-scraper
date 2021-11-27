@@ -2,10 +2,9 @@ from math import e
 from decouple import config
 import tweepy as tw
 from tweepy import user
+import numpy
 import pandas as pd
-import time, os, fnmatch, shutil
-import csv
-import pymongo
+import time
 from pymongo import MongoClient
 import datetime
 

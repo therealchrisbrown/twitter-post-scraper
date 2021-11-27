@@ -7,9 +7,9 @@ name = "pypi"
 python-decouple = "*"
 tweepy = "*"
 pandas = "*"
-streamlit = "*"
 pymongo = {extras = ["srv"], version = "*"}
 mime = "*"
+cython = "*"
 
 [dev-packages]
 
