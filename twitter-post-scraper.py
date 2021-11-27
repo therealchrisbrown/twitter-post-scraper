@@ -2,7 +2,7 @@ from math import e
 from decouple import config
 import tweepy as tw
 from tweepy import user
-import numpy
+import numpy as np
 import pandas as pd
 import time
 from pymongo import MongoClient
