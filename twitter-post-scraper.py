@@ -1,7 +1,6 @@
 from math import e
 from decouple import config
 import tweepy as tw
-from tweepy import user
 import numpy as np
 import pandas as pd
 import time
@@ -12,8 +11,8 @@ import datetime
 COMPANY = config('COMPANY_NAME')
 
 # Connect mongoDB
-client = MongoClient(config('mongodb_uri'))
-db = client[config('mongodb_cluster')]
+client = MongoClient(config('MONGODB_URI'))
+db = client[config('MONGODB_CLUSTER')]
 collection_twitter = db["twitter"]
 
 # Twitter Auth & Config
