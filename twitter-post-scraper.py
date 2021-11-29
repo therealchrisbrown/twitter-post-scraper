@@ -17,10 +17,10 @@ db = client[config('mongodb_cluster')]
 collection_twitter = db["twitter"]
 
 # Twitter Auth & Config
-auth = tw.OAuthHandler(config('consumer_key'),config('consumer_secret'))
-auth.set_access_token(config('access_token'),config('access_secret'))
+auth = tw.OAuthHandler(config('CONSUMER_KEY'),config('CONSUMER_SECRET'))
+auth.set_access_token(config('ACCESS_TOKEN'),config('ACCESS_SECRET'))
 api = tw.API(auth,wait_on_rate_limit=True)
-username = config('twitter_user')
+username = config('TWITTER_USER')
 count = 150
 
 ### DATA
@@ -64,3 +64,5 @@ else:
     collection_twitter.insert_many(new_data_mdb_dict)
 
     print("#### Es wurden Tweets hinzugefügt ####")
+
+print("Script ist gelaufen")
