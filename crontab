@@ -1,1 +1,1 @@
-* * * * * python3 /twitter-post-scraper.py >> /logfile.txt
+*/2 * * * * python3 twitter-post-scraper.py >> logfile.txt
