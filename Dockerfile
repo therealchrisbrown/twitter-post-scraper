@@ -2,18 +2,14 @@
 
 FROM python:3.7.10-slim-stretch
 
-WORKDIR /py_twitter-posts-scraper
+WORKDIR /twitter-scraper
 
 COPY requirements.txt requirements.txt
 
-COPY crontab crontab
-
 RUN pip3 install -r requirements.txt
 
-RUN apt-get update && apt-get -y install cron
+RUN apt-get update 
 
 COPY . .
 
-RUN crontab crontab
-
-CMD ["cron", "-f"]
+CMD ["python3", "twitter-post-scraper.py"]
