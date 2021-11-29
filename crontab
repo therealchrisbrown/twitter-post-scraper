@@ -1,1 +1,1 @@
-* * * * * root python3 py_twitter-posts-scraper/twitter-post-scraper.py >> /logfile.txt
+* * * * * python3 /twitter-post-scraper.py >> /logfile.txt
