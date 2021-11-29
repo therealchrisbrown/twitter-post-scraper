@@ -10,10 +10,10 @@ from email.message import EmailMessage
 
 
 # MongoDB Auth & Connection
-client = MongoClient(config('mongodb_uri'))
+client = MongoClient(config('MONGODB_URI'))
 
 # Connect to specific DB
-db = client[config('mongodb_cluster')]
+db = client[config('MONGODB_CLUSTER')]
 
 # Connect to specific Collection
 twitter_data = db.twitter
@@ -63,8 +63,8 @@ if search_function(query_GF).shape[0] != 0:
 
 ######### MAIL SETUP
 
-username = config('gmail_user')
-password = config('gmail_password')
+username = config('GMAIL_USER')
+password = config('GMAIL_PASSWORD')
 msg = EmailMessage()
 msg['From'] = username
 msg['To'] = ['ralf.blum@upchain.io']
