@@ -12,4 +12,6 @@ RUN apt-get update
 
 COPY . .
 
+ENV PORT 8080
+
 CMD ["python3", "twitter-post-scraper.py"]
