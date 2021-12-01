@@ -68,7 +68,8 @@ def scraper():
 
     print("Script ist gelaufen")
 
-schedule.every(2).minutes.do(scraper)
+schedule.every().day.at("08:30").do(scraper)
+#schedule.every(2).minutes.do(scraper)
 
 while True:
     schedule.run_pending()
