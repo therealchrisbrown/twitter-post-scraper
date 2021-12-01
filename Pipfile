@@ -11,6 +11,7 @@ pymongo = {extras = ["srv"], version = "*"}
 mime = "*"
 cython = "*"
 schedule = "*"
+flask = "*"
 
 [dev-packages]
 
