@@ -6,13 +6,17 @@
             <h3 style="font-family:Open Sans, 'Open Sans', Times, serif;">Was ist seit gestern wichtiges passiert? Hier kommt dein Daily Report.</h3>
         </div>
         <div style="font-family:Open Sans, 'Open Sans', Times, serif;padding:15px 0px">
-            <div style="height: 500px;width:400px">
+            <div style="height: 500px;width:700px">
                 <div style="text-align:left;">
                     <h3 style="font-size:24px">Kunde: {p.KUNDE}</h3>
-                    <h4 style="font-size:20px">{p.MATransaktion}</h4>
+                    <h4 style="font-size:20px">{p.GF_WECHSEL}</h4>
                     <p style="font-size:16px">{p.INHALT} </p>
-                    <p style="font-size:16px"> Wann: {p.DATUM}</p>
-                    <a href={p.QUELLE}>Weitere Infos</a>
+                    <p style="font-size:16px"> <b>Wann kam die Nachricht?</b> {p.DATUM}</p>
+                    <a style="font-size:16px" href="https://www.linkedin.com/search/results/all/?keywords=Alexander%20Heinzmann%20BPD%20Immobilien&origin=GLOBAL_SEARCH_HEADER&sid=1Ny"><span>	
+                        &#128073;</span> Jetzt mit Alexander Heinzmann auf LinkedIn vernetzen</a><br>
+                    <a style="font-size:16px" href="https://www.linkedin.com/feed/"><span> </span>	
+                        &#128073;</span> Beitrag auf LinkedIn veröffentlichen</a><br><br>
+                    <a href={p.QUELLE}>Hier zur News</a>
                 </div>
                 <hr style="background-color:#f5f5f5;height:5px;margin:20px 0px;">
             </div>
