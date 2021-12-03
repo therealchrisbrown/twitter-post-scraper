@@ -77,7 +77,7 @@ def home():
         
 
     # schedule.every().day.at("08:30").do(scraper)
-    schedule.every(2).minutes.do(scraper)
+    schedule.every(30).minutes.do(scraper)
 
     while True:
         schedule.run_pending()
