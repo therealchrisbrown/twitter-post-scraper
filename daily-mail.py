@@ -67,11 +67,11 @@ username = config('GMAIL_USER')
 password = config('GMAIL_PASSWORD')
 msg = EmailMessage()
 msg['From'] = username
-msg['To'] = ['jannis.holthusen@upchain.io']
+msg['To'] = ['christian.braun@upchain.io']
 msg['Subject'] = 'Dein Daily Report'
 
 class Main:
-    MAIL_TO = 'Jannis'
+    MAIL_TO = 'Christian'
     KUNDE = 'BPD Immobilienentwicklung GmbH'
     INHALT = NEWS_info
     DATUM = NEWS_date
