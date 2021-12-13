@@ -7,3 +7,4 @@
 results
 backup
 logfile.txt
+__pycache__*

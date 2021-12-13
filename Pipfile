@@ -12,6 +12,7 @@ mime = "*"
 cython = "*"
 schedule = "*"
 flask = "*"
+jinja2 = "*"
 
 [dev-packages]
 
