@@ -7,6 +7,8 @@ import time
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.message import EmailMessage
+from jinja2 import Environment, BaseLoader
+
 
 
 # MongoDB Auth & Connection
@@ -35,28 +37,39 @@ for i in query_mail:
     )
 
 mail_data = pd.DataFrame(mail_data).sort_values(by=['Wann'], ascending=False)
-# print(mail_data)
 
 ### IF STATEMENTS & QUERY FUNCTIONS
+
+headlines = []
 
 query_MA = 'MATransaktion'
 query_GF = 'WechselGF'
 
-def search_function (element):
-    search_df = mail_data[mail_data['Was'].str.contains(element)]
-    return search_df
+for value in mail_data['Was']:
+    if query_MA in value:
+        headlines.append("Veränderung im Unternehmensbereich")
+    elif query_GF in value:
+        headlines.append("Veränderung in der Unternehmensführung")
 
-if search_function(query_MA).shape[0] != 0:
-    NEWS_info = search_function(query_MA).iloc[0]['News-Inhalt']
-    NEWS_date = search_function(query_MA).iloc[0]['Wann']
-    NEWS_src =search_function(query_MA).iloc[0]['Zur News']
-    MA_head = "Veränderung im Unternehmensbereich"
+mail_data['Header'] = headlines
+print(mail_data)
 
-if search_function(query_GF).shape[0] != 0:
-    NEWS_info = search_function(query_GF).iloc[0]['News-Inhalt']
-    NEWS_date = search_function(query_GF).iloc[0]['Wann']
-    NEWS_src =search_function(query_GF).iloc[0]['Zur News']
-    GF_head = "Veränderung in der Unternehmensführung"
+
+# def search_function (element):
+#     search_df = mail_data[mail_data['Was'].str.contains(element)]
+#     return search_df
+
+# if search_function(query_MA).shape[0] != 0:
+#     NEWS_info = search_function(query_MA).iloc[0]['News-Inhalt']
+#     NEWS_date = search_function(query_MA).iloc[0]['Wann']
+#     NEWS_src =search_function(query_MA).iloc[0]['Zur News']
+#     MA_head = "Veränderung im Unternehmensbereich"
+
+# if search_function(query_GF).shape[0] != 0:
+#     NEWS_info = search_function(query_GF).iloc[0]['News-Inhalt']
+#     NEWS_date = search_function(query_GF).iloc[0]['Wann']
+#     NEWS_src =search_function(query_GF).iloc[0]['Zur News']
+#     GF_head = "Veränderung in der Unternehmensführung"
 
 
     
@@ -66,21 +79,37 @@ if search_function(query_GF).shape[0] != 0:
 username = config('GMAIL_USER')
 password = config('GMAIL_PASSWORD')
 msg = EmailMessage()
-msg['From'] = username
-msg['To'] = ['christian.braun@upchain.io']
+msg['From'] = "Daily Report <news@upchain.io>"
+msg['To'] = ['ch.braun1@gmx.de']
 msg['Subject'] = 'Dein Daily Report'
+
 
 class Main:
     MAIL_TO = 'Christian'
+
     KUNDE = 'BPD Immobilienentwicklung GmbH'
-    INHALT = NEWS_info
-    DATUM = NEWS_date
-    QUELLE = NEWS_src
+
+    INHALT = mail_data['News-Inhalt'].values
+    DATUM = mail_data['Wann'].values
+    QUELLE = mail_data['Zur News'].values
+
+class Head:
+    HEADER = mail_data['Header'].values
+
+    #for content in mail_data['News-Inhalt']:
+        
+    #INHALT = NEWS_info
+    #for datum in mail_data['Wann']:
+        
+    #DATUM = NEWS_date
+    #for quelle in mail_data['Zur News']:
+        
+    #QUELLE = NEWS_src
     #MATransaktion = MA_head
-    GF_WECHSEL = GF_head
+    #GF_WECHSEL = GF_head
 
 HTML_File = open('index.html', 'r')
-s =HTML_File.read().format(p=Main())
+s =HTML_File.read().format(p=Main(), h=Head())
 
 msg.set_content(s, subtype='html')
 
