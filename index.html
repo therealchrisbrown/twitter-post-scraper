@@ -3,13 +3,15 @@
     <body>
         <div style="background-color:#f5f5f5;padding:10px 20px;">
             <h1 style="font-family:Open Sans, 'Open Sans', Times, serif;">Guten Morgen, {p.MAIL_TO}! <span>&#128075;&#127996;</span></h1>
-            <h3 style="font-family:Open Sans, 'Open Sans', Times, serif;">Was ist seit gestern wichtiges passiert? Hier kommt dein Daily Report.</h3>
+            <h3 style="font-family:Open Sans, 'Open Sans', Times, serif;">Was ist seit dem letzten Mal wichtiges passiert? Hier kommt dein Daily Report.</h3>
         </div>
         <div style="font-family:Open Sans, 'Open Sans', Times, serif;padding:15px 0px">
             <div style="height: 500px;width:700px">
                 <div style="text-align:left;">
                     <h3 style="font-size:24px">Kunde: {p.KUNDE}</h3>
-                    <h4 style="font-size:20px">{p.GF_WECHSEL}</h4>
+                    {% for h in headlines %}
+                    <h4 class="head" style="font-size:20px">{{h}}</h4>
+                    {% endfor %}
                     <p style="font-size:16px">{p.INHALT} </p>
                     <p style="font-size:16px"> <b>Wann kam die Nachricht?</b> {p.DATUM}</p>
                     <a style="font-size:16px" href="https://www.linkedin.com/search/results/all/?keywords=Alexander%20Heinzmann%20BPD%20Immobilien&origin=GLOBAL_SEARCH_HEADER&sid=1Ny"><span>	
